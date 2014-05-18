@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>28FF0620-520C-414A-928B-F04141EA09B2</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CopperJump</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>5F14D0B3-F4B4-4CE6-9F39-E8ADC355D851</key>
+		<string>https://github.com/dymx101/CooperJump.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>CopperJump/CopperJump.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>5F14D0B3-F4B4-4CE6-9F39-E8ADC355D851</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/dymx101/CooperJump.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>5F14D0B3-F4B4-4CE6-9F39-E8ADC355D851</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>5F14D0B3-F4B4-4CE6-9F39-E8ADC355D851</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CooperJump</string>
+		</dict>
+	</array>
+</dict>
+</plist>

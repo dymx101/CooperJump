@@ -67,6 +67,8 @@
 		EA2C024B1928990A0036D385 /* Background20.png in Resources */ = {isa = PBXBuildFile; fileRef = EA2C02201928990A0036D385 /* Background20.png */; };
 		EA2C024C1928990A0036D385 /* Background20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA2C02211928990A0036D385 /* Background20@2x.png */; };
 		EA2C024D1928990A0036D385 /* Background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA2C02221928990A0036D385 /* Background@2x.png */; };
+		EA2C02501928A6870036D385 /* GameObjectNode.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2C024F1928A6870036D385 /* GameObjectNode.m */; };
+		EA2C02531928A83A0036D385 /* StarNode.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2C02521928A83A0036D385 /* StarNode.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,6 +148,10 @@
 		EA2C02201928990A0036D385 /* Background20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background20.png; sourceTree = "<group>"; };
 		EA2C02211928990A0036D385 /* Background20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background20@2x.png"; sourceTree = "<group>"; };
 		EA2C02221928990A0036D385 /* Background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Background@2x.png"; sourceTree = "<group>"; };
+		EA2C024E1928A6870036D385 /* GameObjectNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObjectNode.h; sourceTree = "<group>"; };
+		EA2C024F1928A6870036D385 /* GameObjectNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObjectNode.m; sourceTree = "<group>"; };
+		EA2C02511928A83A0036D385 /* StarNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StarNode.h; sourceTree = "<group>"; };
+		EA2C02521928A83A0036D385 /* StarNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StarNode.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +224,10 @@
 				EA2C01D7192895AE0036D385 /* Spaceship.png */,
 				EA2C01D9192895AE0036D385 /* Images.xcassets */,
 				EA2C01C3192895AE0036D385 /* Supporting Files */,
+				EA2C024E1928A6870036D385 /* GameObjectNode.h */,
+				EA2C024F1928A6870036D385 /* GameObjectNode.m */,
+				EA2C02511928A83A0036D385 /* StarNode.h */,
+				EA2C02521928A83A0036D385 /* StarNode.m */,
 			);
 			path = CopperJump;
 			sourceTree = "<group>";
@@ -451,10 +461,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA2C02501928A6870036D385 /* GameObjectNode.m in Sources */,
 				EA2C01C9192895AE0036D385 /* main.m in Sources */,
 				EA2C01CD192895AE0036D385 /* CJAppDelegate.m in Sources */,
 				EA2C01D3192895AE0036D385 /* CJViewController.m in Sources */,
 				EA2C01D6192895AE0036D385 /* CJMyScene.m in Sources */,
+				EA2C02531928A83A0036D385 /* StarNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,6 +673,7 @@
 				EA2C01F2192895AE0036D385 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EA2C01F3192895AE0036D385 /* Build configuration list for PBXNativeTarget "CopperJumpTests" */ = {
 			isa = XCConfigurationList;
@@ -669,6 +682,7 @@
 				EA2C01F5192895AE0036D385 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

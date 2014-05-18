@@ -7,8 +7,15 @@
 //
 
 #import "CJMyScene.h"
+#import "StarNode.h"
 
-@interface CJMyScene ()
+typedef NS_OPTIONS(uint32_t, CollisionCategory) {
+    CollisionCategoryPlayer   = 0x1 << 0,
+    CollisionCategoryStar     = 0x1 << 1,
+    CollisionCategoryPlatform = 0x1 << 2,
+};
+
+@interface CJMyScene () <SKPhysicsContactDelegate>
 {
     // Layered Nodes
     SKNode *_backgroundNode;
@@ -18,6 +25,9 @@
     
     // Player
     SKNode *_player;
+    
+    // Tap To Start node
+    SKSpriteNode *_tapToStartNode;
 }
 @end
 
@@ -28,6 +38,12 @@
     if (self = [super initWithSize:size]) {
         self.backgroundColor = [SKColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
         
+        // Set contact delegate
+        self.physicsWorld.contactDelegate = self;
+        
+        // Add some gravity
+        self.physicsWorld.gravity = CGVectorMake(0.0f, -2.0f);
+        
         // Create the game nodes
         // Background
         _backgroundNode = [self createBackgroundNode];
@@ -37,9 +53,23 @@
         _foregroundNode = [SKNode node];
         [self addChild:_foregroundNode];
         
+        // HUD
+        _hudNode = [SKNode node];
+        [self addChild:_hudNode];
+        
+        // Add a star
+        StarNode *star = [self createStarAtPosition:CGPointMake(160, 220)];
+        [_foregroundNode addChild:star];
+        
         // Add the player
         _player = [self createPlayer];
         [_foregroundNode addChild:_player];
+        
+        
+        // Tap to Start
+        _tapToStartNode = [SKSpriteNode spriteNodeWithImageNamed:@"TapToStart"];
+        _tapToStartNode.position = CGPointMake(160, 180.0f);
+        [_hudNode addChild:_tapToStartNode];
         
     }
     return self;
@@ -77,7 +107,88 @@
     SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Player"];
     [playerNode addChild:sprite];
     
+    
+    // 1
+    playerNode.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:sprite.size.width/2];
+    // 2
+    playerNode.physicsBody.dynamic = NO;
+    // 3
+    playerNode.physicsBody.allowsRotation = NO;
+    // 4
+    playerNode.physicsBody.restitution = 1.0f;
+    playerNode.physicsBody.friction = 0.0f;
+    playerNode.physicsBody.angularDamping = 0.0f;
+    playerNode.physicsBody.linearDamping = 0.0f;
+    
+    // 1
+    playerNode.physicsBody.usesPreciseCollisionDetection = YES;
+    // 2
+    playerNode.physicsBody.categoryBitMask = CollisionCategoryPlayer;
+    // 3
+    playerNode.physicsBody.collisionBitMask = 0;
+    // 4
+    playerNode.physicsBody.contactTestBitMask = CollisionCategoryStar | CollisionCategoryPlatform;
+    
     return playerNode;
+}
+
+- (StarNode *) createStarAtPosition:(CGPoint)position
+{
+    // 1
+    StarNode *node = [StarNode node];
+    [node setPosition:position];
+    [node setName:@"NODE_STAR"];
+    
+    // 2
+    SKSpriteNode *sprite;
+    sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Star"];
+    [node addChild:sprite];
+    
+    // 3
+    node.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:sprite.size.width/2];
+    
+    // 4
+    node.physicsBody.dynamic = NO;
+    
+    node.physicsBody.categoryBitMask = CollisionCategoryStar;
+    node.physicsBody.collisionBitMask = 0;
+    
+    return node;
+}
+
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // 1
+    // If we're already playing, ignore touches
+    if (_player.physicsBody.dynamic) return;
+    
+    // 2
+    // Remove the Tap to Start node
+    [_tapToStartNode removeFromParent];
+    
+    // 3
+    // Start the player by putting them into the physics simulation
+    _player.physicsBody.dynamic = YES;
+    // 4
+    [_player.physicsBody applyImpulse:CGVectorMake(0.0f, 20.0f)];
+}
+
+- (void) didBeginContact:(SKPhysicsContact *)contact
+{
+    // 1
+    BOOL updateHUD = NO;
+    
+    // 2
+    SKNode *other = (contact.bodyA.node != _player) ? contact.bodyA.node : contact.bodyB.node;
+    
+    // 3
+    updateHUD = [(GameObjectNode *)other collisionWithPlayer:_player];
+    
+    // Update the HUD if necessary
+    if (updateHUD) {
+        // 4 TODO: Update HUD in Part 2
+    }
 }
 
 @end
