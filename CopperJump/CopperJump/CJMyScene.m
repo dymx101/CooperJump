@@ -61,13 +61,58 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
         _hudNode = [SKNode node];
         [self addChild:_hudNode];
         
-        // Add a platform
-        PlatformNode *platform = [self createPlatformAtPosition:CGPointMake(160, 320) ofType:PLATFORM_NORMAL];
-        [_foregroundNode addChild:platform];
         
-        // Add a star
-        StarNode *star = [self createStarAtPosition:CGPointMake(160, 220) ofType:STAR_SPECIAL];
-        [_foregroundNode addChild:star];
+        // Load the level
+        NSString *levelPlist = [[NSBundle mainBundle] pathForResource: @"Level01" ofType: @"plist"];
+        NSDictionary *levelData = [NSDictionary dictionaryWithContentsOfFile:levelPlist];
+        
+        // Height at which the player ends the level
+        _endLevelY = [levelData[@"EndY"] intValue];
+        
+        
+        
+        // Add the platforms
+        NSDictionary *platforms = levelData[@"Platforms"];
+        NSDictionary *platformPatterns = platforms[@"Patterns"];
+        NSArray *platformPositions = platforms[@"Positions"];
+        for (NSDictionary *platformPosition in platformPositions) {
+            CGFloat patternX = [platformPosition[@"x"] floatValue];
+            CGFloat patternY = [platformPosition[@"y"] floatValue];
+            NSString *pattern = platformPosition[@"pattern"];
+            
+            // Look up the pattern
+            NSArray *platformPattern = platformPatterns[pattern];
+            for (NSDictionary *platformPoint in platformPattern) {
+                CGFloat x = [platformPoint[@"x"] floatValue];
+                CGFloat y = [platformPoint[@"y"] floatValue];
+                PlatformType type = [platformPoint[@"type"] intValue];
+                
+                PlatformNode *platformNode = [self createPlatformAtPosition:CGPointMake(x + patternX, y + patternY)
+                                                                     ofType:type];
+                [_foregroundNode addChild:platformNode];
+            }
+        }
+        
+        // Add the stars
+        NSDictionary *stars = levelData[@"Stars"];
+        NSDictionary *starPatterns = stars[@"Patterns"];
+        NSArray *starPositions = stars[@"Positions"];
+        for (NSDictionary *starPosition in starPositions) {
+            CGFloat patternX = [starPosition[@"x"] floatValue];
+            CGFloat patternY = [starPosition[@"y"] floatValue];
+            NSString *pattern = starPosition[@"pattern"];
+            
+            // Look up the pattern
+            NSArray *starPattern = starPatterns[pattern];
+            for (NSDictionary *starPoint in starPattern) {
+                CGFloat x = [starPoint[@"x"] floatValue];
+                CGFloat y = [starPoint[@"y"] floatValue];
+                StarType type = [starPoint[@"type"] intValue];
+                
+                StarNode *starNode = [self createStarAtPosition:CGPointMake(x + patternX, y + patternY) ofType:type];
+                [_foregroundNode addChild:starNode];
+            }
+        }
         
         // Add the player
         _player = [self createPlayer];
