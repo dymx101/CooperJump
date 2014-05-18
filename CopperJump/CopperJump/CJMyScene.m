@@ -8,6 +8,7 @@
 
 #import "CJMyScene.h"
 #import "StarNode.h"
+#import "PlatformNode.h"
 
 typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     CollisionCategoryPlayer   = 0x1 << 0,
@@ -28,6 +29,9 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     
     // Tap To Start node
     SKSpriteNode *_tapToStartNode;
+    
+    // Height at which level ends
+    int _endLevelY;
 }
 @end
 
@@ -57,8 +61,12 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
         _hudNode = [SKNode node];
         [self addChild:_hudNode];
         
+        // Add a platform
+        PlatformNode *platform = [self createPlatformAtPosition:CGPointMake(160, 320) ofType:PLATFORM_NORMAL];
+        [_foregroundNode addChild:platform];
+        
         // Add a star
-        StarNode *star = [self createStarAtPosition:CGPointMake(160, 220)];
+        StarNode *star = [self createStarAtPosition:CGPointMake(160, 220) ofType:STAR_SPECIAL];
         [_foregroundNode addChild:star];
         
         // Add the player
@@ -132,7 +140,7 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     return playerNode;
 }
 
-- (StarNode *) createStarAtPosition:(CGPoint)position
+- (StarNode *) createStarAtPosition:(CGPoint)position ofType:(StarType)type
 {
     // 1
     StarNode *node = [StarNode node];
@@ -140,8 +148,13 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     [node setName:@"NODE_STAR"];
     
     // 2
+    [node setStarType:type];
     SKSpriteNode *sprite;
-    sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Star"];
+    if (type == STAR_SPECIAL) {
+        sprite = [SKSpriteNode spriteNodeWithImageNamed:@"StarSpecial"];
+    } else {
+        sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Star"];
+    }
     [node addChild:sprite];
     
     // 3
@@ -151,6 +164,32 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     node.physicsBody.dynamic = NO;
     
     node.physicsBody.categoryBitMask = CollisionCategoryStar;
+    node.physicsBody.collisionBitMask = 0;
+    
+    return node;
+}
+
+- (PlatformNode *) createPlatformAtPosition:(CGPoint)position ofType:(PlatformType)type
+{
+    // 1
+    PlatformNode *node = [PlatformNode node];
+    [node setPosition:position];
+    [node setName:@"NODE_PLATFORM"];
+    [node setPlatformType:type];
+    
+    // 2
+    SKSpriteNode *sprite;
+    if (type == PLATFORM_BREAK) {
+        sprite = [SKSpriteNode spriteNodeWithImageNamed:@"PlatformBreak"];
+    } else {
+        sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Platform"];
+    }
+    [node addChild:sprite];
+    
+    // 3
+    node.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:sprite.size];
+    node.physicsBody.dynamic = NO;
+    node.physicsBody.categoryBitMask = CollisionCategoryPlatform;
     node.physicsBody.collisionBitMask = 0;
     
     return node;
