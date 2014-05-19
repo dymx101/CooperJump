@@ -16,6 +16,8 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     CollisionCategoryPlatform = 0x1 << 2,
 };
 
+@import CoreMotion;
+
 @interface CJMyScene () <SKPhysicsContactDelegate>
 {
     // Layered Nodes
@@ -32,6 +34,12 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     
     // Height at which level ends
     int _endLevelY;
+    
+    // Motion manager for accelerometer
+    CMMotionManager *_motionManager;
+    
+    // Acceleration value from accelerometer
+    CGFloat _xAcceleration;
 }
 @end
 
@@ -52,6 +60,10 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
         // Background
         _backgroundNode = [self createBackgroundNode];
         [self addChild:_backgroundNode];
+        
+        // Midground
+        _midgroundNode = [self createMidgroundNode];
+        [self addChild:_midgroundNode];
         
         // Foreground
         _foregroundNode = [SKNode node];
@@ -123,6 +135,20 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
         _tapToStartNode = [SKSpriteNode spriteNodeWithImageNamed:@"TapToStart"];
         _tapToStartNode.position = CGPointMake(160, 180.0f);
         [_hudNode addChild:_tapToStartNode];
+        
+        
+        // CoreMotion
+        _motionManager = [[CMMotionManager alloc] init];
+        // 1
+        _motionManager.accelerometerUpdateInterval = 0.2;
+        // 2
+        [_motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue currentQueue]
+                                             withHandler:^(CMAccelerometerData  *accelerometerData, NSError *error) {
+                                                 // 3
+                                                 CMAcceleration acceleration = accelerometerData.acceleration;
+                                                 // 4
+                                                 _xAcceleration = (acceleration.x * 0.75) + (_xAcceleration * 0.25);
+                                             }];
         
     }
     return self;
@@ -241,6 +267,33 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
 }
 
 
+- (SKNode *)createMidgroundNode
+{
+    // Create the node
+    SKNode *midgroundNode = [SKNode node];
+    
+    // 1
+    // Add some branches to the midground
+    for (int i=0; i<10; i++) {
+        NSString *spriteName;
+        // 2
+        int r = arc4random() % 2;
+        if (r > 0) {
+            spriteName = @"BranchRight";
+        } else {
+            spriteName = @"BranchLeft";
+        }
+        // 3
+        SKSpriteNode *branchNode = [SKSpriteNode spriteNodeWithImageNamed:spriteName];
+        branchNode.position = CGPointMake(160.0f, 500.0f * i);
+        [midgroundNode addChild:branchNode];
+    }
+    
+    // Return the completed background node
+    return midgroundNode;	
+}
+
+
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // 1
@@ -273,6 +326,31 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     if (updateHUD) {
         // 4 TODO: Update HUD in Part 2
     }
+}
+
+- (void) update:(CFTimeInterval)currentTime {
+    // Calculate player y offset
+    if (_player.position.y > 200.0f) {
+        _backgroundNode.position = CGPointMake(0.0f, -((_player.position.y - 200.0f)/10));
+        _midgroundNode.position = CGPointMake(0.0f, -((_player.position.y - 200.0f)/4));
+        _foregroundNode.position = CGPointMake(0.0f, -(_player.position.y - 200.0f));
+    }
+}
+
+- (void) didSimulatePhysics
+{
+    // 1
+    // Set velocity based on x-axis acceleration
+    _player.physicsBody.velocity = CGVectorMake(_xAcceleration * 400.0f, _player.physicsBody.velocity.dy);
+    
+    // 2
+    // Check x bounds
+    if (_player.position.x < -20.0f) {
+        _player.position = CGPointMake(340.0f, _player.position.y);
+    } else if (_player.position.x > 340.0f) {
+        _player.position = CGPointMake(-20.0f, _player.position.y);
+    }
+    return;
 }
 
 @end
