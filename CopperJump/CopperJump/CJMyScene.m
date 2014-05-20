@@ -308,7 +308,7 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     // Start the player by putting them into the physics simulation
     _player.physicsBody.dynamic = YES;
     // 4
-    [_player.physicsBody applyImpulse:CGVectorMake(0.0f, 20.0f)];
+    [_player.physicsBody applyImpulse:CGVectorMake(0.0f, 30.0f)];
 }
 
 - (void) didBeginContact:(SKPhysicsContact *)contact
