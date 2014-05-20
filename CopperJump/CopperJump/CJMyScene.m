@@ -9,6 +9,7 @@
 #import "CJMyScene.h"
 #import "StarNode.h"
 #import "PlatformNode.h"
+#import "EndGameScene.h"
 
 #define INITIAL_PLAYER_HEIGHT   (7000.0f)
 
@@ -49,10 +50,28 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     
     // Max y reached by player
     int _maxPlayerY;
+    
+    // Game over dude !
+    BOOL _gameOver;
 }
 @end
 
 @implementation CJMyScene
+
+- (void) endGame
+{
+    // 1
+    _gameOver = YES;
+    
+    // 2
+    // Save stars and high score
+    [[GameState sharedInstance] saveState];
+    
+    // 3
+    SKScene *endGameScene = [[EndGameScene alloc] initWithSize:self.size];
+    SKTransition *reveal = [SKTransition fadeWithDuration:0.5];
+    [self.view presentScene:endGameScene transition:reveal];
+}
 
 - (id) initWithSize:(CGSize)size
 {
@@ -61,6 +80,8 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
         
         // Reset
         _maxPlayerY = INITIAL_PLAYER_HEIGHT;
+        [GameState sharedInstance].score = 0;
+        _gameOver = NO;
         
         // Set contact delegate
         self.physicsWorld.contactDelegate = self;
@@ -352,6 +373,8 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
 
 - (void) update:(CFTimeInterval)currentTime {
     
+    if (_gameOver) return;
+    
     // Remove game objects that have passed by
     [_foregroundNode enumerateChildNodesWithName:@"NODE_PLATFORM" usingBlock:^(SKNode *node, BOOL *stop) {
         [((PlatformNode *)node) checkNodeRemoval:_player.position.y];
@@ -373,6 +396,10 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
         _maxPlayerY = (int)_player.position.y;
 
         [_lblScore setText:[NSString stringWithFormat:@"%d", [GameState sharedInstance].score]];
+    }
+    
+    if (_player.position.y < 0) {
+        [self endGame];
     }
 }
 

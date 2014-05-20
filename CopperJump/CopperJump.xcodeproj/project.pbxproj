@@ -73,6 +73,7 @@
 		EA2C02581928F1590036D385 /* PlatformNode.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2C02571928F1590036D385 /* PlatformNode.m */; };
 		EA2C025A1928F4B10036D385 /* Level01.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA2C02591928F4B10036D385 /* Level01.plist */; };
 		EAE1FCA7192B2D8D005A6F82 /* GameState.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE1FCA6192B2D8D005A6F82 /* GameState.m */; };
+		EAE1FCAA192B4001005A6F82 /* EndGameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE1FCA9192B4001005A6F82 /* EndGameScene.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -162,6 +163,8 @@
 		EA2C02591928F4B10036D385 /* Level01.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Level01.plist; sourceTree = "<group>"; };
 		EAE1FCA5192B2D8D005A6F82 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameState.h; sourceTree = "<group>"; };
 		EAE1FCA6192B2D8D005A6F82 /* GameState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameState.m; sourceTree = "<group>"; };
+		EAE1FCA8192B4001005A6F82 /* EndGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndGameScene.h; sourceTree = "<group>"; };
+		EAE1FCA9192B4001005A6F82 /* EndGameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndGameScene.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +247,8 @@
 				EA2C02571928F1590036D385 /* PlatformNode.m */,
 				EAE1FCA5192B2D8D005A6F82 /* GameState.h */,
 				EAE1FCA6192B2D8D005A6F82 /* GameState.m */,
+				EAE1FCA8192B4001005A6F82 /* EndGameScene.h */,
+				EAE1FCA9192B4001005A6F82 /* EndGameScene.m */,
 			);
 			path = CopperJump;
 			sourceTree = "<group>";
@@ -480,6 +485,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA2C02581928F1590036D385 /* PlatformNode.m in Sources */,
+				EAE1FCAA192B4001005A6F82 /* EndGameScene.m in Sources */,
 				EAE1FCA7192B2D8D005A6F82 /* GameState.m in Sources */,
 				EA2C02501928A6870036D385 /* GameObjectNode.m in Sources */,
 				EA2C01C9192895AE0036D385 /* main.m in Sources */,
