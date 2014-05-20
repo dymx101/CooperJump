@@ -36,7 +36,7 @@
 - (BOOL) collisionWithPlayer:(SKNode *)player
 {
     // Boost the player up
-    player.physicsBody.velocity = CGVectorMake(player.physicsBody.velocity.dx, 400.0f);
+    player.physicsBody.velocity = CGVectorMake(player.physicsBody.velocity.dx, player.physicsBody.velocity.dy / 2);
     
     
     // Play sound
