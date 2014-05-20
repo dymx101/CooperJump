@@ -10,6 +10,8 @@
 #import "StarNode.h"
 #import "PlatformNode.h"
 
+#define INITIAL_PLAYER_HEIGHT   (7000.0f)
+
 typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     CollisionCategoryPlayer   = 0x1 << 0,
     CollisionCategoryStar     = 0x1 << 1,
@@ -40,6 +42,13 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     
     // Acceleration value from accelerometer
     CGFloat _xAcceleration;
+    
+    // Labels for score and stars
+    SKLabelNode *_lblScore;
+    SKLabelNode *_lblStars;
+    
+    // Max y reached by player
+    int _maxPlayerY;
 }
 @end
 
@@ -49,6 +58,9 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
 {
     if (self = [super initWithSize:size]) {
         self.backgroundColor = [SKColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
+        
+        // Reset
+        _maxPlayerY = INITIAL_PLAYER_HEIGHT;
         
         // Set contact delegate
         self.physicsWorld.contactDelegate = self;
@@ -136,6 +148,32 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
         _tapToStartNode.position = CGPointMake(160, 280.0f);
         [_hudNode addChild:_tapToStartNode];
         
+        // Build the HUD
+        
+        // Stars
+        SKSpriteNode *star = [SKSpriteNode spriteNodeWithImageNamed:@"Star"];
+        star.position = CGPointMake(25, self.size.height-30);
+        [_hudNode addChild:star];
+
+        _lblStars = [SKLabelNode labelNodeWithFontNamed:@"ChalkboardSE-Bold"];
+        _lblStars.fontSize = 30;
+        _lblStars.fontColor = [SKColor whiteColor];
+        _lblStars.position = CGPointMake(50, self.size.height-40);
+        _lblStars.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
+
+        [_lblStars setText:[NSString stringWithFormat:@"X %d", [GameState sharedInstance].stars]];
+        [_hudNode addChild:_lblStars];
+        
+        // Score
+        _lblScore = [SKLabelNode labelNodeWithFontNamed:@"ChalkboardSE-Bold"];
+        _lblScore.fontSize = 30;
+        _lblScore.fontColor = [SKColor whiteColor];
+        _lblScore.position = CGPointMake(self.size.width-20, self.size.height-40);
+        _lblScore.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
+
+        [_lblScore setText:@"0"];
+        [_hudNode addChild:_lblScore];
+        
         
         // CoreMotion
         _motionManager = [[CMMotionManager alloc] init];
@@ -177,7 +215,7 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
 - (SKNode *) createPlayer
 {
     SKNode *playerNode = [SKNode node];
-    [playerNode setPosition:CGPointMake(160.0f, 7000.0f)];
+    [playerNode setPosition:CGPointMake(160.0f, INITIAL_PLAYER_HEIGHT)];
     
     SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Player"];
     [playerNode addChild:sprite];
@@ -307,16 +345,34 @@ typedef NS_OPTIONS(uint32_t, CollisionCategory) {
     
     // Update the HUD if necessary
     if (updateHUD) {
-        // 4 TODO: Update HUD in Part 2
+        [_lblStars setText:[NSString stringWithFormat:@"X %d", [GameState sharedInstance].stars]];
+        [_lblScore setText:[NSString stringWithFormat:@"%d", [GameState sharedInstance].score]];
     }
 }
 
 - (void) update:(CFTimeInterval)currentTime {
+    
+    // Remove game objects that have passed by
+    [_foregroundNode enumerateChildNodesWithName:@"NODE_PLATFORM" usingBlock:^(SKNode *node, BOOL *stop) {
+        [((PlatformNode *)node) checkNodeRemoval:_player.position.y];
+    }];
+    [_foregroundNode enumerateChildNodesWithName:@"NODE_STAR" usingBlock:^(SKNode *node, BOOL *stop) {
+        [((StarNode *)node) checkNodeRemoval:_player.position.y];
+    }];
+    
     // Calculate player y offset
     if (_player.position.y > 200.0f) {
         _backgroundNode.position = CGPointMake(0.0f, -((_player.position.y - 200.0f)/10));
         _midgroundNode.position = CGPointMake(0.0f, -((_player.position.y - 200.0f)/4));
         _foregroundNode.position = CGPointMake(0.0f, -(_player.position.y - 200.0f));
+    }
+    
+    // New max height ?
+    if ((int)_player.position.y < _maxPlayerY) {
+        [GameState sharedInstance].score +=  _maxPlayerY - (int)_player.position.y;
+        _maxPlayerY = (int)_player.position.y;
+
+        [_lblScore setText:[NSString stringWithFormat:@"%d", [GameState sharedInstance].score]];
     }
 }
 

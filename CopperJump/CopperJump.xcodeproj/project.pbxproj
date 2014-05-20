@@ -72,6 +72,7 @@
 		EA2C02551928F00C0036D385 /* StarPing.wav in Resources */ = {isa = PBXBuildFile; fileRef = EA2C02541928F00C0036D385 /* StarPing.wav */; };
 		EA2C02581928F1590036D385 /* PlatformNode.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2C02571928F1590036D385 /* PlatformNode.m */; };
 		EA2C025A1928F4B10036D385 /* Level01.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA2C02591928F4B10036D385 /* Level01.plist */; };
+		EAE1FCA7192B2D8D005A6F82 /* GameState.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE1FCA6192B2D8D005A6F82 /* GameState.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,6 +160,8 @@
 		EA2C02561928F1590036D385 /* PlatformNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlatformNode.h; sourceTree = "<group>"; };
 		EA2C02571928F1590036D385 /* PlatformNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlatformNode.m; sourceTree = "<group>"; };
 		EA2C02591928F4B10036D385 /* Level01.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Level01.plist; sourceTree = "<group>"; };
+		EAE1FCA5192B2D8D005A6F82 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameState.h; sourceTree = "<group>"; };
+		EAE1FCA6192B2D8D005A6F82 /* GameState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameState.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,6 +242,8 @@
 				EA2C02521928A83A0036D385 /* StarNode.m */,
 				EA2C02561928F1590036D385 /* PlatformNode.h */,
 				EA2C02571928F1590036D385 /* PlatformNode.m */,
+				EAE1FCA5192B2D8D005A6F82 /* GameState.h */,
+				EAE1FCA6192B2D8D005A6F82 /* GameState.m */,
 			);
 			path = CopperJump;
 			sourceTree = "<group>";
@@ -475,6 +480,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA2C02581928F1590036D385 /* PlatformNode.m in Sources */,
+				EAE1FCA7192B2D8D005A6F82 /* GameState.m in Sources */,
 				EA2C02501928A6870036D385 /* GameObjectNode.m in Sources */,
 				EA2C01C9192895AE0036D385 /* main.m in Sources */,
 				EA2C01CD192895AE0036D385 /* CJAppDelegate.m in Sources */,

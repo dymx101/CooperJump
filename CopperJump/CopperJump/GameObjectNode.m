@@ -17,7 +17,7 @@
 
 - (void) checkNodeRemoval:(CGFloat)playerY
 {
-    if (playerY > self.position.y + 300.0f) {
+    if (playerY < self.position.y - 300.0f) {
         [self removeFromParent];
     }
 }
